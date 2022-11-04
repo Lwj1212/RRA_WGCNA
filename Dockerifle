@@ -1,0 +1,76 @@
+FROM rocker/r-ver:4.1.3
+
+LABEL org.opencontainers.image.licenses="GPL-2.0-or-later" \
+      org.opencontainers.image.source="https://github.com/rocker-org/rocker-versioned2" \
+      org.opencontainers.image.vendor="Rocker Project" \
+      org.opencontainers.image.authors="Carl Boettiger <cboettig@ropensci.org>"
+
+ENV S6_VERSION=v2.1.0.2
+ENV RSTUDIO_VERSION=2022.02.2+485
+ENV DEFAULT_USER=rstudio
+ENV PANDOC_VERSION=default
+
+RUN /rocker_scripts/install_rstudio.sh
+RUN /rocker_scripts/install_pandoc.sh
+
+# linux package
+RUN apt-get clean all && \
+  apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    libhdf5-dev \
+    libcurl4-gnutls-dev \
+    libssl-dev \
+    libxml2-dev \
+    libpng-dev \
+    libxt-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libglpk40 \
+    libgit2-28 \
+    libx11-dev \
+    libcairo2-dev \
+    libxt-dev \
+    libmysqlclient-dev \
+  && apt-get clean all && \
+  apt-get purge && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Rpackage
+RUN Rscript -e "install.packages(c('tidyverse','reticulate','BiocManager', 'processx','devtools', 'R.methodsS3', 'pkgbuild', 'pkgload'), dependencies = TRUE)"
+RUN Rscript -e "cran <- c('Cairo','RobustRankAggreg', 'pheatmap', 'survival', 'survminer', 'rbioapi', 'RMariaDB');install.packages(cran);"
+RUN Rscript -e "bioc <- c('GEOquery', 'limma', 'DESeq2', 'impute', 'WGCNA', 'Gviz', 'sva', 'modelr', 'clusterProfiler', 'ggVennDiagram','enrichplot', 'org.Hs.eg.db', 'MultiAssayExperiment', 'BiocParallel');BiocManager::install(bioc)"
+# RUN Rscript -e 'devtools::install_github("gaospecial/ggVennDiagram");devtools::install_github("kevinblighe/CorLevelPlot");BiocManager::install("BioinformaticsFMRP/TCGAbiolinksGUI.data")'
+# RUN Rscript -e 'BiocManager::install("BioinformaticsFMRP/TCGAbiolinks");devtools::install_github("tiagochst/ELMER.data");devtools::install_github("tiagochst/ELMER")'
+
+# python install
+RUN apt update && apt install software-properties-common -y
+RUN add-apt-repository ppa:deadsnakes/ppa && apt install python3.8 -y
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+    
+# python
+RUN apt-get clean all && \
+  apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    python3-pip
+COPY env env
+RUN pip install -r env/requirements.txt
+
+ 
+WORKDIR /home/rstudio
+
+# dir copy
+RUN git clone https://github.com/Jin0331/RRA-WGCNA.git
+COPY Data RRA-WGCNA/Data
+COPY GDCdata RRA-WGCNA/GDCdata
+COPY GSE RRA-WGCNA/GSE
+COPY PKL RRA-WGCNA/PKL
+COPY RAW_DATA RRA-WGCNA/RAW_DATA
+COPY WGCNA_PIPELINE_RESULT RRA-WGCNA/WGCNA_PIPELINE_RESULT
+RUN chmod -R 777 RRA-WGCNA
+
+EXPOSE 8787
+
+CMD ["/init"]

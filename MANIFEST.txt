@@ -1,0 +1,6 @@
+id	filename	md5	size	state
+1a722bb3-4a6f-4748-8dd5-9c5b29f7e748	1a722bb3-4a6f-4748-8dd5-9c5b29f7e748/jhu-usc.edu_LIHC.HumanMethylation450.18.lvl-3.TCGA-CC-A9FW-01A-11D-A36Y-05.txt	5dc51846081fba407c5e8b02745251dd	21283359	validated
+668b608e-7a93-4871-8876-5c0d68961b0a	668b608e-7a93-4871-8876-5c0d68961b0a/jhu-usc.edu_LIHC.HumanMethylation450.16.lvl-3.TCGA-2Y-A9H7-01A-11D-A39G-05.txt	9869831683c0d51518c1029f1058de83	21283796	validated
+7083a6bc-c416-4a49-9217-a62a33b7e46c	7083a6bc-c416-4a49-9217-a62a33b7e46c/jhu-usc.edu_LIHC.HumanMethylation450.14.lvl-3.TCGA-RC-A7SK-01A-11D-A356-05.txt	53c10b98d996d259c23465a0923e5e49	21314376	validated
+e2e27123-3d95-4f99-b6ab-5601b058c86a	e2e27123-3d95-4f99-b6ab-5601b058c86a/jhu-usc.edu_LIHC.HumanMethylation450.13.lvl-3.TCGA-UB-A7MA-01A-11D-A341-05.txt	e8efb29f3dfa05ab2656d4fe8eb565ca	21295966	validated
+f1fed156-ad2c-4ae2-9433-4dfe65ef8245	f1fed156-ad2c-4ae2-9433-4dfe65ef8245/jhu-usc.edu_LIHC.HumanMethylation450.11.lvl-3.TCGA-MI-A75G-01A-11D-A32R-05.txt	9d44cff8092ccc30f5d71ced9545237b	21289711	validated
